@@ -1,37 +1,37 @@
 #!/bin/bash
 
 # Prompt the user with a GUI dialog to check for updates
-zenity --question --text="Do you want to check for updates?" --title="Update Script" --width=300
+zenity --question --text="Do you want to check for updates?" --title="OS Upgrade" --width=300
 
 if [ $? -eq 0 ]; then
   # Update the package databases
-  sudo pacman -Sy
+  sudo /usr/bin/pacman -Sy
 
-  # Check if a specific package is available, e.g., KOOMPI-OS
-  if yay -Qi KOOMPI-OS &>/dev/null; then
-    # Prompt the user with a GUI dialog to update KOOMPI-OS
-    zenity --question --text="A new version of KOOMPI-OS is available. Do you want to update?" --title="Update Script" --width=300
+  # Check if a specific package is available, e.g., koompi-os
+  if /usr/bin/pacman -Qi koompi-os &>/dev/null; then
+    # Prompt the user with a GUI dialog to update koompi-os
+    zenity --question --text="A new version of KOOMPI-OS is available. Do you want to update?" --title="OS Upgrade" --width=300
 
     if [ $? -eq 0 ]; then
-      # Fetch new packages for KOOMPI-OS
+      # Fetch new packages for koompi-os
       sudo pacman -Syuw
 
       # Prompt the user with a GUI dialog to start the upgrade
-      zenity --question --text="Do you want to start the upgrade now?" --title="Update Script" --width=300
+      zenity --question --text="Do you want to start the upgrade now?" --title="OS Upgrade" --width=300
 
       if [ $? -eq 0 ]; then
         # Perform the upgrade
         sudo pacman -Su
-        zenity --info --text="Upgrade completed successfully." --title="Update Script" --width=300
+        zenity --info --text="Upgrade completed successfully." --title="OS UpgradeScript" --width=300
       else
-        zenity --info --text="Upgrade canceled." --title="Update Script" --width=300
+        zenity --info --text="Upgrade canceled." --title="OS Upgrade" --width=300
       fi
     else
-      zenity --info --text="KOOMPI-OS update canceled." --title="Update Script" --width=300
+      zenity --info --text="KOOMPI-OS update canceled." --title="OS Upgrade" --width=300
     fi
   else
-    zenity --info --text="KOOMPI-OS is not installed." --title="Update Script" --width=300
+    zenity --info --text="KOOMPI-OS is not installed." --title="OS Upgrade" --width=300
   fi
 else
-  zenity --info --text="Update check canceled." --title="Update Script" --width=300
+  zenity --info --text="Update check canceled." --title="OS Upgrade" --width=300
 fi
