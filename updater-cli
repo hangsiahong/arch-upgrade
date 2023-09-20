@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Prompt the user if they want to check for updates
+read -p "Do you want to check for updates? (y/n): " response
+
+if [[ $response =~ ^[Yy]$ ]]; then
+  # Update the package databases
+  sudo pacman -Sy
+
+  # Check if a specific package is available, e.g., KOOMPI-OS
+  if yay -Qi KOOMPI-OS &>/dev/null; then
+    echo "A new version of KOOMPI-OS is available."
+    read -p "Do you want to update KOOMPI-OS? (y/n): " update_response
+
+    if [[ $update_response =~ ^[Yy]$ ]]; then
+      # Fetch new packages for KOOMPI-OS
+      sudo pacman -Syuw
+
+      # Prompt for confirmation to start the upgrade
+      read -p "Do you want to start the upgrade now? (y/n): " upgrade_response
+
+      if [[ $upgrade_response =~ ^[Yy]$ ]]; then
+        # Perform the upgrade
+        sudo pacman -Su
+      else
+        echo "Upgrade canceled."
+      fi
+    else
+      echo "KOOMPI-OS update canceled."
+    fi
+  else
+    echo "KOOMPI-OS is not installed."
+  fi
+else
+  echo "Update check canceled."
+fi
